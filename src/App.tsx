@@ -90,11 +90,13 @@ function App() {
             name="valuePerMinute"
             id="valuePerMinute"
             onChange={handleSelect}
+            data-testid="select-value-per-minute"
           >
             {dddsList.map(({ destiny, origin, valuePerMinute }, index) => (
               <option
                 key={index}
                 value={valuePerMinute}
+                data-testid={`select-option-${index}`}
               >
                 Origem: {origin} Destino: {destiny}
               </option>
@@ -136,7 +138,7 @@ function App() {
           type="button"
           value="Enviar Orçamento"
           data-testid="id-send"
-          className="button"
+          className="button is-dark"
         />
         <div className="App-quote-results-box">
           {tableQuote?.withPlan && tableQuote?.withoutPlan && renderQuoteResult()}

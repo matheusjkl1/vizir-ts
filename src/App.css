@@ -8,14 +8,22 @@ body {
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 10vh;
-  display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  background-color: #363636;
   color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: calc(10px + 2vmin);
+  min-height: 10vh;
+}
+
+.App-header {
+  font-style: italic;
+}
+
+.App-header svg {
+  width: 2em;
 }
 
 .App-main-content {

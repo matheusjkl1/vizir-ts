@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 import App from '../App';
@@ -51,19 +51,23 @@ describe('Verifica os elementos da tela de orçamento', () => {
 
     expect(quoteValue).toHaveTextContent("Tempo de ligacao em minutos deve ser um número.");
   });
+
+  it('Simula se existe as opções de planos.', () => {
+    render(<App />);
+  
+    expect.assertions(5);
+  
+    userEvent.selectOptions(screen.getByTestId('select-value-per-minute'), '1.9');
+    expect((screen.getByTestId('select-option-0') as HTMLOptionElement).selected).toBeTruthy();
+    expect((screen.getByTestId('select-option-1') as HTMLOptionElement).selected).toBeFalsy();
+    
+    userEvent.selectOptions(screen.getByTestId('select-value-per-minute'), '1.7');
+    expect((screen.getByTestId('select-option-2') as HTMLOptionElement).selected).toBeTruthy();
+  
+    userEvent.selectOptions(screen.getByTestId('select-value-per-minute'), '2.7');
+    expect((screen.getByTestId('select-option-3') as HTMLOptionElement).selected).toBeTruthy();
+  
+    userEvent.selectOptions(screen.getByTestId('select-value-per-minute'), '0.9');
+    expect((screen.getByTestId('select-option-4') as HTMLOptionElement).selected).toBeTruthy();
+  })
 })
-
-  // test('Verificando se existe as opções de planos.', async () => {
-  //   userEvent.selectOptions(screen.getByRole('listbox'), [ 30, 60])
-
-  //   const options = await screen.findByRole('option', { name: "FaleMais 30", hidden: true })
-
-  //   expect( options.onselect).toBe(true)
-  // })
-
-  // test('Verificando se existe as opções de planos.', () => {
-  //   render(<App />);
-  //   const callTimeInput = screen.getByLabelText('Escolha seu Plano');
-  //   expect(callTimeInput).toBeInTheDocument();
-  //   expect(callTimeInput).toHaveProperty('type', 'number');
-  // });
