@@ -1,26 +1,28 @@
 import React, { useState, ChangeEvent } from 'react';
+import 'bulma/css/bulma.css';
 import './App.css';
 import { sendQuote } from './services/planCalculation'
 import { dddsList, plans } from './data/data'
+import Header from './components/Header';
 
 interface IFormPlan {
   valuePerMinute: number,
   minutesPerPlane: number,
-  callTime: number
+  callTime: number,
 }
 
-interface IquoteTable {
-  withoutPlan?: number,
-  withPlan?: number,
+interface ItableQuote {
+  withoutPlan?: string,
+  withPlan?: string,
   error?: string
 }
 
 function App() {
   const [formPlan, setFormPlan] = useState<IFormPlan>({
-    valuePerMinute: dddsList[0].valuePerMinute, minutesPerPlane: plans[0].minutesPerPlane, callTime: 0 
+    valuePerMinute: dddsList[0].valuePerMinute, minutesPerPlane: plans[0].minutesPerPlane, callTime: 0,
   });
 
-  const [tableQuote, setTableQuote] = useState<IquoteTable>();
+  const [tableQuote, setTableQuote] = useState<ItableQuote>();
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     const { name, value } = event.target
@@ -33,7 +35,6 @@ function App() {
   }
 
   function submit() {
-    
     if (typeof(formPlan.callTime) !== 'number') {
       const parsedCallTime =  parseFloat(formPlan.callTime)
       if (isNaN(parsedCallTime)) {
@@ -43,38 +44,106 @@ function App() {
           sendQuote(
             formPlan.minutesPerPlane,
             formPlan.valuePerMinute,
-            formPlan.callTime
+            parseFloat(formPlan.callTime)
           )
         );
       }
     }
   }
 
+  const renderQuoteResult = () => (
+    <div className="App-quote-results">
+      <article className="message is-link">
+        <div className="message-header">
+          Com plano Fale Mais
+        </div>
+        <div className="message-body">
+          <p data-testid="quote-value">
+          R$ {(tableQuote?.withPlan)?.toString().replace(".",",")}
+          </p>
+        </div>
+      </article>
+      <article className="message is-danger">
+        <div className="message-header">
+          Sem plano Fale Mais
+        </div>
+        <div className="message-body">
+          <p data-testid="quote-value">
+            R$ {(tableQuote?.withoutPlan)?.toString().replace(".",",")}
+          </p>
+        </div>
+      </article>
+    </div>
+  )
+
   return (
     <div className="App">
-      <label htmlFor="ddd">Choose DDD Origin and Destiny:</label>
-      <div>
-        <select name="ddd" id="ddd" onChange={handleSelect}>
-          {dddsList.map(({ destiny, origin, valuePerMinute }, index) => (
-            <option key={index} value={valuePerMinute}>Origin: {origin} Destiny: {destiny}</option>
+      <Header />
+      <div className="App-main-content box">
+        <label htmlFor="valuePerMinute">
+        <h4 className="title is-4">
+          Escolha o DDD de Origem e Destino:
+        </h4>
+        </label>
+        <div className="select is-info">
+          <select
+            name="valuePerMinute"
+            id="valuePerMinute"
+            onChange={handleSelect}
+          >
+            {dddsList.map(({ destiny, origin, valuePerMinute }, index) => (
+              <option
+                key={index}
+                value={valuePerMinute}
+              >
+                Origem: {origin} Destino: {destiny}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="select is-info">
+        <select
+          name="minutesPerPlane"
+          id="minutesPerPlane"
+          onChange={handleSelect}
+        >
+          {plans.map(({ descriptPlan, minutesPerPlane }, index) => (
+            <option
+              key={index}
+              value={minutesPerPlane}
+            >
+              {descriptPlan} ({minutesPerPlane} minutos)
+            </option>
           ))}
         </select>
-      </div>
-      <label htmlFor="plan">Escolha seu Plano:</label>
-      <select name="plan" id="plan" onChange={handleSelect}>
-        {plans.map(({ descriptPlan, minutesPerPlane }, index) => (
-          <option  key={index} value={minutesPerPlane}>{descriptPlan} ({minutesPerPlane} minutos)</option>
-        ))}
-      </select>
-      <label id="call-time" htmlFor="callTime">
-        Tempo de ligacao em minutos
-        <input name="callTime" id="callTime" onChange={handleChange}/>
-      </label>
-      <input onClick={submit} type="button" value="Enviar Orçamento" data-testid="id-send" />
-      <div>
-        <p data-testid="quote-value">{tableQuote?.withPlan}</p>
-        <p data-testid="quote-value">{tableQuote?.withoutPlan}</p>
-        <p data-testid="quote-error">{tableQuote?.error}</p>
+        </div>
+        <label id="call-time" htmlFor="callTime">
+          <h4 className="title is-4">
+            Tempo de ligacao em minutos
+          </h4>
+          <input
+            name="callTime"
+            id="callTime"
+            data-testid="callTime"
+            onChange={handleChange}
+            className="input is-info"
+          />
+        </label>
+        <input
+          onClick={submit}
+          type="button"
+          value="Enviar Orçamento"
+          data-testid="id-send"
+          className="button"
+        />
+        {tableQuote?.withPlan && tableQuote?.withoutPlan && renderQuoteResult()}
+        {tableQuote?.error &&
+          <div className="notification is-danger is-light">
+            <p data-testid="quote-error">
+              {tableQuote?.error}
+            </p>
+          </div>
+        }
       </div>
     </div>
   );

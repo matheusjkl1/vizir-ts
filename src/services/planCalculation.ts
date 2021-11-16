@@ -18,8 +18,8 @@ function sendQuote(minutesPerPlane: number, valuePerMinute: number, callTime: nu
   const quotewithPlan = multiplePricePerMinuteWithPlan(minutesPerPlane, valuePerMinute, callTime);
 
   return {
-    withoutPlan: quoteWithoutPlan,
-    withPlan: quotewithPlan,
+    withoutPlan: quoteWithoutPlan.toFixed(2).toString(),
+    withPlan: quotewithPlan.toFixed(2).toString(),
   };
 }
 
