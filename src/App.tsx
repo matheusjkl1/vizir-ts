@@ -85,7 +85,7 @@ function App() {
           Escolha o DDD de Origem e Destino:
         </h4>
         </label>
-        <div className="select is-info">
+        <div className="App-main-content-select select is-info">
           <select
             name="valuePerMinute"
             id="valuePerMinute"
@@ -101,34 +101,36 @@ function App() {
             ))}
           </select>
         </div>
-        <div className="select is-info">
-        <select
-          name="minutesPerPlane"
-          id="minutesPerPlane"
-          onChange={handleSelect}
-        >
-          {plans.map(({ descriptPlan, minutesPerPlane }, index) => (
-            <option
-              key={index}
-              value={minutesPerPlane}
-            >
-              {descriptPlan} ({minutesPerPlane} minutos)
-            </option>
-          ))}
-        </select>
+        <div className="App-main-content-select select is-info">
+          <select
+            name="minutesPerPlane"
+            id="minutesPerPlane"
+            onChange={handleSelect}
+          >
+            {plans.map(({ descriptPlan, minutesPerPlane }, index) => (
+              <option
+                key={index}
+                value={minutesPerPlane}
+              >
+                {descriptPlan} ({minutesPerPlane} minutos)
+              </option>
+            ))}
+          </select>
         </div>
-        <label id="call-time" htmlFor="callTime">
-          <h4 className="title is-4">
-            Tempo de ligacao em minutos
-          </h4>
-          <input
-            name="callTime"
-            id="callTime"
-            data-testid="callTime"
-            onChange={handleChange}
-            className="input is-info"
-          />
-        </label>
+        <div>
+          <label id="call-time" htmlFor="callTime">
+            <h4 className="title is-4">
+              Tempo de ligacao em minutos
+            </h4>
+            <input
+              name="callTime"
+              id="callTime"
+              data-testid="callTime"
+              onChange={handleChange}
+              className="input is-info App-main-content-input-call-time"
+            />
+          </label>
+        </div>
         <input
           onClick={submit}
           type="button"
@@ -136,14 +138,16 @@ function App() {
           data-testid="id-send"
           className="button"
         />
-        {tableQuote?.withPlan && tableQuote?.withoutPlan && renderQuoteResult()}
-        {tableQuote?.error &&
-          <div className="notification is-danger is-light">
-            <p data-testid="quote-error">
-              {tableQuote?.error}
-            </p>
-          </div>
-        }
+        <div className="App-quote-results-box">
+          {tableQuote?.withPlan && tableQuote?.withoutPlan && renderQuoteResult()}
+          {tableQuote?.error &&
+            <div className="notification is-danger is-light">
+              <p data-testid="quote-error">
+                {tableQuote?.error}
+              </p>
+            </div>
+          }
+        </div>
       </div>
     </div>
   );

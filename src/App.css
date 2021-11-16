@@ -22,12 +22,26 @@ body {
   align-items:center;
   display: flex;
   flex-direction: column;
-  min-height: 50vh;
   justify-content: center;
 }
 
 .App-main-content select {
-  width: 60vh;
+  width: 50vh;
+}
+
+.App-main-content-input-call-time {
+  width: 50vh;
+  margin-bottom: 1em;
+}
+
+.App-main-content-select {
+  margin: 1em;
+}
+
+.App-quote-results-box {
+  height: 5em;
+  width: 25em;
+  margin: 3em;
 }
 
 .App-quote-results {
@@ -37,5 +51,5 @@ body {
 
 .message {
   width: 20em;
-  height: 10em;
+  height: 7em;
 }
